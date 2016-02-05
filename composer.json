@@ -6,7 +6,8 @@
             "email": "c.viebrock@tippingcanoe.com"
         }
     ],
-    "require": {},
+    "require": {
+    },
     "require-dev": {
         "laravel/homestead": "^3.0"
     }
