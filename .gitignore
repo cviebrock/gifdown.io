@@ -1,0 +1,8 @@
+.DS_Store
+*.idea
+/vendor/
+/public/css/*
+/node_modules
+/bower_components
+/public/js/*
+/.vagrant

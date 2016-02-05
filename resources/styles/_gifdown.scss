@@ -1,0 +1,89 @@
+@import url(https://fonts.googleapis.com/css?family=Work+Sans:400,200|Roboto+Mono);
+
+html {
+  //height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  //align-items: center;
+  justify-content: center;
+  align-items: stretch;
+  background: $gray-dark;
+  color: $gray-lightest;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 200;
+}
+
+a {
+  transition: color .2s ease-in-out;
+  &:hover {
+    color: inherit;
+  }
+}
+
+h1, h2, h3 {
+  font-weight: 200;
+}
+
+header, footer {
+  background: transparentize(#000, .75);
+  color: $gray-light;
+  flex-basis: 40px;
+  padding: 10px;
+}
+
+footer {
+  font-size: .5em;
+  a, a:hover {
+    font-weight: 400;
+    color: $gray-lighter;
+  }
+}
+
+section {
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+
+  margin: 0 auto;
+  text-align: center;
+
+  h1 {
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, .25);
+  }
+
+}
+
+input, button {
+  border-radius: 5px;
+  padding: .25em .5em;
+  border: 0;
+}
+
+input {
+  font-family: 'Roboto Mono', monospace;
+  color: $gray-dark;
+}
+
+button {
+  @include button-variant(#fff, $brand-primary, $brand-primary);
+  //background: $brand-primary;
+  //transition: all .2s ease-in-out;
+  //&:hover {
+  //  background: darken($brand-primary,.1);
+  //}
+  //&:active {
+  //  outline: 0;
+  //}
+}
+
+
+#gif {
+  height: 50px;
+}

@@ -1,0 +1,22 @@
+{
+  "name": "gifdown",
+  "description": "",
+  "main": "gulpfile.js",
+  "authors": [
+    "Colin Viebrock <colin@viebrock.ca>"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "bootstrap": "v4.0.0-alpha.2"
+  }
+}

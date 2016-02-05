@@ -1,0 +1,13 @@
+{
+    "name": "cviebrock/gifdown",
+    "authors": [
+        {
+            "name": "Colin Viebrock",
+            "email": "c.viebrock@tippingcanoe.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "laravel/homestead": "^3.0"
+    }
+}
