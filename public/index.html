@@ -9,34 +9,40 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/css/main.css">
 </head>
+
 <body>
 
-<section id="request">
+<video autoplay muted loop id="bgvid">
+    <source src="/videos/leaderpack.mp4" type="video/mp4">
+</video>
 
-    <h1>gifdown.io</h1>
+<div id="flex">
+    <section id="request">
 
-    <form>
-        <input type="text" id="timespan" name="timespan">
-        <button type="submit">GIF me!</button>
-    </form>
+        <h1>gifdown.io</h1>
+
+        <form>
+            <input type="text" id="timespan" name="timespan">
+            <button type="submit">GIF me!</button>
+        </form>
 
 
-    <div id="response">
-        <div id="response_inner">
-            
+        <div id="response">
+            <div id="response_inner">
+
+            </div>
         </div>
-    </div>
 
-</section>
+    </section>
 
-<footer>
-    <a href="/">gifdown.io</a>
-    &mdash;
-    &copy; 2016 <a href="https://github.com/cviebrock">Colin Viebrock</a>
-    &mdash;
-    A hack-day project from <a href="http://www.tippingcanoe.com">Tipping Canoe</a>!
-</footer>
-
+    <footer>
+        <a href="/">gifdown.io</a>
+        &mdash;
+        &copy; 2016 <a href="https://github.com/cviebrock">Colin Viebrock</a>
+        &mdash;
+        A hack-day project from <a href="http://www.tippingcanoe.com">Tipping Canoe</a>.
+    </footer>
+</div>
 
 <!-- jQuery first, then Bootstrap JS. -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>

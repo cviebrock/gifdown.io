@@ -5,4 +5,5 @@
 /node_modules
 /bower_components
 /public/js/*
+/public/videos/*
 /.vagrant

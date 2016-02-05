@@ -11,7 +11,7 @@ var config = {
     publicDir: './public',
 };
 
-gulp.task('default', ['styles','scripts','watch']);
+gulp.task('default', ['styles', 'scripts', 'videos', 'watch']);
 
 
 gulp.task('styles', function () {
@@ -34,8 +34,14 @@ gulp.task('scripts', function () {
         .pipe(gulp.dest('public/js'));
 });
 
+gulp.task('videos', function () {
+    return gulp.src('resources/videos/**/*')
+        .pipe(gulp.dest('public/videos'));
+});
+
 gulp.task('watch', function () {
     gulp.watch('resources/styles/*.scss', ['styles']);
     gulp.watch('resources/scripts/*.js', ['scripts']);
+    gulp.watch('resources/videos/**/*', ['videos']);
     // Other watchers
 });

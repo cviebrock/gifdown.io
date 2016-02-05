@@ -2,13 +2,49 @@
 
 $seconds = null;
 
+
+function noInputResponse()
+{
+    return [
+        'success' => false,
+        'html'    => '<p>Come on … at least enter <em>something</em>.</p>',
+    ];
+}
+
+function errorResponse()
+{
+
+    $huh = ['Huh?', 'Wha?', 'Ummm… no.', 'Sorry?', 'Does not compute!'];
+    $i = array_rand($huh);
+
+    $html = <<< EOB
+<h2>{$huh[$i]}</h2>
+<p>
+Try entering a time interval in one of the following formats:
+</p>
+<ul>
+<li><tt>200</tt> <em>plain ol' number of seconds</em></li>
+<li><tt>20 seconds</tt> <em>and/or "minutes" or "hours"</em></li>
+<li><tt>01:23</tt> <em>that's 1 minute, 23 seconds</em></li>
+<li><tt>01m23s</tt> <em>same as above</em></li>
+<li><tt>01:23:45</tt> <em>that's 1 hour, 23 minutes, 45 seconds</em></li>
+<li><tt>01h23m45s</tt> <em>same</em></li>
+</ul>
+EOB;
+
+    return [
+        'success' => false,
+        'html'    => $html,
+    ];
+}
+
+
 try {
 
     $interval = $_POST['interval'];
 
     if (empty($interval) || $interval == '0') {
-        echo '<p>Come on … at least enter <em>something</em>.</p>';
-        die;
+        die(json_encode(noInputResponse()));
     }
 
     if (is_numeric($interval)) {
@@ -56,24 +92,11 @@ try {
 
 if ($seconds === null || $seconds === false || $seconds < 0) {
 
-    $huh = ['Huh?', 'Wha?', 'Ummm… no.', 'Sorry?', 'Does not compute!'];
-    $i = array_rand($huh);
+    die(json_encode(errorResponse()));
 
-
-    echo <<< EOB
-<h2>{$huh[$i]}</h2>
-<p>
-Try entering a time interval in one of the following formats:
-</p>
-<ul>
-<li><tt>200</tt> <em>plain ol' number of seconds</em></li>
-<li><tt>20 seconds</tt> <em>and/or "minutes" or "hours"</em></li>
-<li><tt>01:23</tt> <em>that's 1 minute, 23 seconds</em></li>
-<li><tt>01m23s</tt> <em>same as above</em></li>
-<li><tt>01:23:45</tt> <em>that's 1 hour, 23 minutes, 45 seconds</em></li>
-<li><tt>01h23m45s</tt> <em>same</em></li>
-</ul>
-EOB;
-} else {
-    echo $seconds;
 }
+
+echo json_encode([
+    'success' => true,
+    'html'    => $seconds,
+]);

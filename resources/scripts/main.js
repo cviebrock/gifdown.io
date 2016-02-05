@@ -1,17 +1,27 @@
+function randBetween(low, high) {
+    var d = high - low;
+    return Math.floor((Math.random() * d) + low);
+}
+
 $(function () {
+
+
+    var placeholders = [
+            randBetween(1, 10) + ' minutes',
+            randBetween(1, 60) + ' seconds',
+            '00:10:45',
+            '05m30s'
+        ],
+        phIdx = 0,
+        phCharIdx = 0,
+        $phInput = $('#timespan'),
+        $response = $('#response'),
+        $responseInner = $('#response_inner'),
+        $video = $('#bgvid');
 
     /**
      * Animated placeholder code
      */
-
-    var placeholders = [
-            '30 seconds',
-            '2 minutes',
-            '00:10:45'
-        ],
-        phIdx = 0,
-        phCharIdx = 0,
-        $phInput = $('#timespan');
 
     var loadInterval = setInterval(loadPlaceholder, 4000),
         typeInterval = setInterval(typePlaceHolder, 150);
@@ -33,9 +43,6 @@ $(function () {
      * Form submission
      */
 
-    var $response = $('#response'),
-        $responseInner = $('#response_inner');
-
     $('form').on('submit', function (e) {
         e.preventDefault();
 
@@ -43,10 +50,21 @@ $(function () {
             interval: $phInput.val()
         };
 
-        $response.fadeTo(200, .01, function () {
+        $.post('generate.php', data, function (result) {
 
-            $responseInner.load('generate.php', data, function () {
+            console.log(result);
 
+            if (result.success) {
+                $video
+                    .css({'opacity': 0});
+                //$video.each(function () {
+                //    this.pause();
+                //});
+            }
+
+            $response.fadeTo(200, .01, function () {
+
+                $responseInner.html(result.html);
                 var ch = $responseInner.height();
 
                 $response.animate({
@@ -54,9 +72,15 @@ $(function () {
                     'opacity': 1
                 }, 1000);
             });
-        });
 
-
+        }, 'json');
     });
 
+    /**
+     * Video stuff
+     */
+
+    $video.prop('playbackRate', 0.5);
+
 });
+
