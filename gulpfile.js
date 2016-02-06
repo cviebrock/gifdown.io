@@ -27,10 +27,7 @@ gulp.task('styles', function () {
 });
 
 gulp.task('scripts', function () {
-    return gulp.src([
-            config.bootstrapDir + '/dist/js/bootstrap.min.js',
-            'resources/scripts/**/*'
-        ])
+    return gulp.src('resources/scripts/**/*')
         .pipe(gulp.dest('public/js'));
 });
 

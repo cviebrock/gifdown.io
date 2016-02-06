@@ -38,6 +38,16 @@ EOB;
     ];
 }
 
+function convertSecondsToTimestamp($seconds)
+{
+
+    $s = $seconds % 60;
+    $m = (($seconds - $s) / 60) % 60;
+    $h = floor($seconds / 3600);
+
+    return sprintf('%02d/%02d/%02d', $h, $m, $s);
+}
+
 
 try {
 
@@ -96,7 +106,10 @@ if ($seconds === null || $seconds === false || $seconds < 0) {
 
 }
 
+$ts = convertSecondsToTimestamp($seconds);
+
+
 echo json_encode([
     'success' => true,
-    'html'    => $seconds,
+    'html'    => $_SERVER['HTTP_HOST'] . '/i/' . $ts . '.gif',
 ]);
