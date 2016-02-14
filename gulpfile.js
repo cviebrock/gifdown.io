@@ -11,8 +11,9 @@ var config = {
     publicDir: './public',
 };
 
-gulp.task('default', ['styles', 'scripts', 'videos', 'watch']);
+gulp.task('default', ['build', 'watch']);
 
+gulp.task('build', ['styles', 'scripts', 'videos']);
 
 gulp.task('styles', function () {
     return gulp.src('resources/styles/main.scss')
