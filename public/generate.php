@@ -108,8 +108,8 @@ if ($seconds === null || $seconds === false || $seconds < 0) {
 
 $ts = convertSecondsToTimestamp($seconds);
 
-
 echo json_encode([
     'success' => true,
-    'html'    => $_SERVER['HTTP_HOST'] . '/i/' . $ts . '.gif',
+    'html'    => 'Generating...',
+    'src'     => 'http://' . $_SERVER['HTTP_HOST'] . '/i/' . $ts . '.gif',
 ]);

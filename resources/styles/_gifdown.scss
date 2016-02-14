@@ -37,7 +37,7 @@ header, footer {
 }
 
 footer {
-  font-size: .75em;
+  font-size: .65em;
   a, a:hover {
     font-weight: 400;
     color: $gray-lighter;
@@ -75,21 +75,13 @@ input {
 
 button {
   @include button-variant(#fff, $brand-primary, $brand-primary);
-  //background: $brand-primary;
-  //transition: all .2s ease-in-out;
-  //&:hover {
-  //  background: darken($brand-primary,.1);
-  //}
-  //&:active {
-  //  outline: 0;
-  //}
 }
 
 
 #response {
   margin-top: 20px;
-  min-height: 50px;
-  height: 50px;
+  min-height: 80px;
+  height: 80px;
   font-size: .8em;
   overflow: hidden;
 

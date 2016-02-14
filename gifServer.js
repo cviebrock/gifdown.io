@@ -5,6 +5,9 @@ var fs = require('fs');
 
 const PORT = 8080;
 
+const BGCOLOR = '#373a3c';
+const FGCOLOR = '#ffffff';
+
 // Create server
 var server = http.createServer(handleRequest);
 
@@ -15,30 +18,28 @@ server.listen(PORT, function () {
 });
 
 
-
 // Handle requests
 function handleRequest(req, res) {
-    console.log(req.url);
-    //res.setHeader('Content-Type', 'image/gif');
 
-    var fileName = 'my.gif';
+    var fileName = req.url,
+        pattern = /\/i\/(\d{2})\/(\d{2})\/(\d{2})\.gif$/,
+        matches = fileName.match(pattern);
 
-    /*
-    - generate the final filename : /i/123.gif
-    - open the file
-    - if it works:
-        - spit it out
-    - if it doesn't exist
-        - generate it
-        - spit it out
-     */
-
-
-    fs.readFile(fileName, function(err, data) {
+    fs.readFile(fileName, function (err, data) {
         if (err) {
-            //buildGif(fileName);
-            res.end('Working...');
+
+            if (!matches) {
+                res.writeHead(404, {'Content-Type': 'text/plain'});
+                res.end('Nope!');
+            } else {
+
+                buildGif(matches[1], matches[2], matches[3]);
+
+                res.writeHead(503, {'Content-Type': 'text/plain', 'Retry-After': 10});
+                res.end('Generating...');
+            }
         } else {
+            // shouldn't get to here as nginx will catch it
             res.setHeader('Content-Type', 'image/gif');
             res.end(data);
         }
@@ -47,38 +48,112 @@ function handleRequest(req, res) {
 }
 
 
-// build the gifs
-function buildGif(fileName) {
+// build the gif
+function buildGif(hours, minutes, seconds) {
 
-    var encoder = new GIFEncoder(320, 240);
-// stream the results as they are available into myanimated.gif
-    encoder.createReadStream().pipe(fs.createWriteStream(fileName));
+    var sprintf = require('sprintf-js').sprintf;
+    var mkdirp = require('mkdirp');
+    var Gifsicle = require('gifsicle-stream'),
+        gifProcessor = new Gifsicle(['-w', '-O3', '--no-loopcount']);
 
-    encoder.start();
-    encoder.setRepeat(0);   // 0 for repeat, -1 for no-repeat
-    encoder.setDelay(500);  // frame delay in ms
-    encoder.setQuality(10); // image quality. 10 is default.
+    var startTime = new Date().getTime();
+
+    // check path exists
+    var path = sprintf('storage/i/%02d/%02d', hours, minutes),
+        fileName = sprintf('%s/%02d.gif', path, seconds);
+
+
+    console.log('Checking directory: ' + path);
+
+    mkdirp(path, function (err) {
+        if (err) {
+            console.log(err)
+        } else {
+
+            var encoder = new GIFEncoder(320, 80);
+
+// stream the results as they are available into gif file
+// need to add gif optimization here
+
+            var output = encoder.createReadStream().pipe(gifProcessor).pipe(fs.createWriteStream(fileName));
+
+            encoder.start();
+            encoder.setRepeat(-1);   // 0 for repeat, -1 for no-repeat
+            encoder.setDelay(1000);  // frame delay in ms
+            encoder.setQuality(20); // image quality. 10 is default.
 
 // use node-canvas
-    var canvas = new Canvas(320, 240);
-    var ctx = canvas.getContext('2d');
+            var canvas = new Canvas(320, 80),
+                ctx = canvas.getContext('2d');
 
-// red rectangle
-    ctx.fillStyle = '#ff0000';
-    ctx.fillRect(0, 0, 320, 240);
-    encoder.addFrame(ctx);
+// setup
+            // Some weirdness with loading custom fonts ...
+            // @see https://github.com/Automattic/node-canvas/issues/624
+            var myFont = new Canvas.Font('Apercu', 'resources/fonts/apercu-mono-webfont.ttf');
 
-// green rectangle
-    ctx.fillStyle = '#00ff00';
-    ctx.fillRect(0, 0, 320, 240);
-    encoder.addFrame(ctx);
+            ctx.font = '60px Apercu';
+            ctx.fillStyle = FGCOLOR;
+            ctx.textBaseline = 'middle';
 
-// blue rectangle
-    ctx.fillStyle = '#0000ff';
-    ctx.fillRect(0, 0, 320, 240);
-    encoder.addFrame(ctx);
+// loop for interval
 
-    encoder.finish();
+            while (true) {
+
+                // background
+                ctx.fillStyle = BGCOLOR;
+                ctx.fillRect(0, 0, 320, 80);
+
+                var textToDraw = sprintf('%02d:%02d:%02d', hours, minutes, seconds);
+
+                var tWidth = ctx.measureText(textToDraw).width,
+                    x = (320 - tWidth) / 2;
+
+                ctx.fillStyle = FGCOLOR;
+                ctx.fillText(textToDraw, x, 40);
+                encoder.addFrame(ctx);
+
+                seconds--;
+                if (seconds < 0) {
+                    seconds = 59;
+                    minutes--;
+                    if (minutes < 0) {
+                        minutes = 59;
+                        hours--;
+                        if (hours < 0) {
+                            break;
+                        }
+                    }
+                }
+
+            }
+
+// end game
+
+            encoder.setDelay(250);  // frame delay in ms
+
+            for (var i = 3; i >= 0; i--) {
+                ctx.fillStyle = BGCOLOR;
+                ctx.fillRect(0, 0, 320, 80);
+                encoder.addFrame(ctx);
+
+                if (i==0) {
+                    encoder.setDelay(60000); // Skype is stoopid
+                }
+
+                ctx.fillStyle = FGCOLOR;
+                ctx.fillText(textToDraw, x, 40);
+                encoder.addFrame(ctx);
+            }
+
+            encoder.finish();
+
+            var endTime = new Date().getTime(),
+                ttb = (endTime - startTime) / 1000;
+            console.log('Creating GIF: ' + fileName + ' [' + ttb + 's]');
+
+            return output;
+        }
+    });
+
 }
-
 

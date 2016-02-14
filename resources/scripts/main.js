@@ -52,14 +52,8 @@ $(function () {
 
         $.post('generate.php', data, function (result) {
 
-            console.log(result);
-
             if (result.success) {
-                $video
-                    .css({'opacity': 0});
-                //$video.each(function () {
-                //    this.pause();
-                //});
+                $video.css({'opacity': 0});
             }
 
             $response.fadeTo(200, .01, function () {
@@ -71,6 +65,10 @@ $(function () {
                     'height': ch + 'px',
                     'opacity': 1
                 }, 1000);
+
+                if (result.success) {
+                    loadImage(result.src)
+                }
             });
 
         }, 'json');
@@ -81,6 +79,24 @@ $(function () {
      */
 
     $video.prop('playbackRate', 0.5);
+
+
+    function loadImage(src) {
+        var img = new Image(),
+            $span = $('span').addClass('url').text(src);
+
+        $(img).load(function() {
+            $responseInner.html($(this))
+                .append($span);
+        }).attr({
+            'src': src
+        }).error(function() {
+           setTimeout(function() {
+               loadImage(src);
+           }, 1000);
+        });
+    }
+
 
 });
 
