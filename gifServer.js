@@ -7,6 +7,8 @@ const PORT = 8080;
 
 const BGCOLOR = '#373a3c';
 const FGCOLOR = '#ffffff';
+const IMG_WIDTH = 200;
+const IMG_HEIGHT = 50;
 
 // Create server
 var server = http.createServer(handleRequest);
@@ -21,7 +23,7 @@ server.listen(PORT, function () {
 // Handle requests
 function handleRequest(req, res) {
 
-    var fileName = req.url,
+    var fileName = req.url.split('?')[0],
         pattern = /\/i\/(\d{2})\/(\d{2})\/(\d{2})\.gif$/,
         matches = fileName.match(pattern);
 
@@ -70,7 +72,7 @@ function buildGif(hours, minutes, seconds) {
             console.log(err)
         } else {
 
-            var encoder = new GIFEncoder(320, 80);
+            var encoder = new GIFEncoder(IMG_WIDTH, IMG_HEIGHT);
 
 // stream the results as they are available into gif file
 // need to add gif optimization here
@@ -83,7 +85,7 @@ function buildGif(hours, minutes, seconds) {
             encoder.setQuality(20); // image quality. 10 is default.
 
 // use node-canvas
-            var canvas = new Canvas(320, 80),
+            var canvas = new Canvas(IMG_WIDTH, IMG_HEIGHT),
                 ctx = canvas.getContext('2d');
 
 // setup
@@ -91,7 +93,7 @@ function buildGif(hours, minutes, seconds) {
             // @see https://github.com/Automattic/node-canvas/issues/624
             var myFont = new Canvas.Font('Apercu', 'resources/fonts/apercu-mono-webfont.ttf');
 
-            ctx.font = '60px Apercu';
+            ctx.font = '36px Apercu';
             ctx.fillStyle = FGCOLOR;
             ctx.textBaseline = 'middle';
 
@@ -101,15 +103,15 @@ function buildGif(hours, minutes, seconds) {
 
                 // background
                 ctx.fillStyle = BGCOLOR;
-                ctx.fillRect(0, 0, 320, 80);
+                ctx.fillRect(0, 0, IMG_WIDTH, IMG_HEIGHT);
 
                 var textToDraw = sprintf('%02d:%02d:%02d', hours, minutes, seconds);
 
                 var tWidth = ctx.measureText(textToDraw).width,
-                    x = (320 - tWidth) / 2;
+                    x = (IMG_WIDTH - tWidth) / 2;
 
                 ctx.fillStyle = FGCOLOR;
-                ctx.fillText(textToDraw, x, 40);
+                ctx.fillText(textToDraw, x, IMG_HEIGHT/2);
                 encoder.addFrame(ctx);
 
                 seconds--;
@@ -133,7 +135,7 @@ function buildGif(hours, minutes, seconds) {
 
             for (var i = 3; i >= 0; i--) {
                 ctx.fillStyle = BGCOLOR;
-                ctx.fillRect(0, 0, 320, 80);
+                ctx.fillRect(0, 0, IMG_WIDTH, IMG_HEIGHT);
                 encoder.addFrame(ctx);
 
                 if (i==0) {
@@ -141,7 +143,7 @@ function buildGif(hours, minutes, seconds) {
                 }
 
                 ctx.fillStyle = FGCOLOR;
-                ctx.fillText(textToDraw, x, 40);
+                ctx.fillText(textToDraw, x, IMG_HEIGHT/2);
                 encoder.addFrame(ctx);
             }
 

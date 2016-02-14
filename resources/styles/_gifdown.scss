@@ -1,6 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Work+Sans:400,200|Roboto+Mono);
 
-$gif-green:         #7ba428;
+$gif-green:         #92BF30; // #7ba428;
 $gray-darkest:      #000000;
 
 body {
@@ -76,8 +76,7 @@ input.interval {
 }
 input.info {
   display: block;
-  width: 320px;
-  margin: 0 auto;
+  width: 100%;
   color: $gray-light;
   background: transparent;
   font-size: .75rem;
@@ -95,8 +94,8 @@ button {
 
 #response {
   margin-top: 20px;
-  min-height: 80px;
-  height: 80px;
+  min-height: 85px;
+  height: 85px;
   font-size: .8em;
   overflow: hidden;
 

@@ -30,6 +30,9 @@ Try entering a time interval in one of the following formats:
 <li><tt>01:23:45</tt> <em>that's 1 hour, 23 minutes, 45 seconds</em></li>
 <li><tt>01h23m45s</tt> <em>same</em></li>
 </ul>
+<p>
+1 hour is the maximum interval, for now.
+</p>
 EOB;
 
     return [
@@ -100,7 +103,7 @@ try {
     $seconds = null;
 }
 
-if ($seconds === null || $seconds === false || $seconds < 0) {
+if ($seconds === null || $seconds === false || $seconds < 0 || $seconds > 3600) {
 
     die(json_encode(errorResponse()));
 

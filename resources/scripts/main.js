@@ -100,11 +100,11 @@ $(function () {
 
             });
         }).attr({
-            'src': src
+            'src': src+'?'+(new Date().getTime())
         }).error(function() {
            setTimeout(function() {
                loadImage(src);
-           }, 1000);
+           }, 3000);
         });
     }
 
