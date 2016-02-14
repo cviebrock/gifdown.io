@@ -1,5 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Work+Sans:400,200|Roboto+Mono);
 
+$gif-green:         #7ba428;
+$gray-darkest:      #000000;
 
 body {
   min-height: 100vh;
@@ -30,7 +32,7 @@ h1, h2, h3 {
 }
 
 header, footer {
-  background: transparentize(#000, .75);
+  background: transparentize($gray-darkest, .75);
   color: $gray-light;
   flex-basis: 40px;
   padding: 10px;
@@ -68,13 +70,26 @@ input, button {
   font-size: 1.5rem;
 }
 
-input {
+input.interval {
   font-family: 'Roboto Mono', monospace;
   color: $gray-dark;
 }
+input.info {
+  display: block;
+  width: 320px;
+  margin: 0 auto;
+  color: $gray-light;
+  background: transparent;
+  font-size: .75rem;
+  text-align: center;
+  &::selection {
+    color: $gray-lightest;
+    background: $gif-green;
+  }
+}
 
 button {
-  @include button-variant(#fff, $brand-primary, $brand-primary);
+  @include button-variant($gray-lightest, $gif-green, $gif-green);
 }
 
 

@@ -83,11 +83,22 @@ $(function () {
 
     function loadImage(src) {
         var img = new Image(),
-            $span = $('span').addClass('url').text(src);
+            $info = $('<input class="info" type="text">').val(src);
 
         $(img).load(function() {
-            $responseInner.html($(this))
-                .append($span);
+            $img = $(this);
+            $response.fadeTo(200, .01, function () {
+                $responseInner.html($img);
+                $responseInner.append($info);
+
+                var ch = $responseInner.height();
+
+                $response.animate({
+                    'height': ch + 'px',
+                    'opacity': 1
+                }, 1000);
+
+            });
         }).attr({
             'src': src
         }).error(function() {
@@ -97,6 +108,10 @@ $(function () {
         });
     }
 
+
+    $response.on('click', 'input.info', function() {
+        $(this).select();
+    });
 
 });
 
