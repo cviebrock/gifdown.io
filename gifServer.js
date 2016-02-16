@@ -2,9 +2,10 @@ var http = require('http');
 var GIFEncoder = require('gifencoder');
 var Canvas = require('canvas');
 var fs = require('fs');
+var cluster = require('cluster');
 
 const PORT = 8080;
-const NODES = 4;
+const CHILD_PROCS = 4;
 
 const BGCOLOR = '#373a3c';
 const FGCOLOR = '#ffffff';
@@ -12,20 +13,18 @@ const IMG_WIDTH = 200;
 const IMG_HEIGHT = 50;
 
 // Create server
-var server = http.createServer(handleRequest);
 
-// Start server
-//server.listen(PORT, function () {
-//    //Callback triggered when server is successfully listening. Hurray!
-//    console.log("Server listening on: http://localhost:%s", PORT);
-//});
-
-// multi nodes
-var nodes = require('multi-node').listen({
-    port: PORT,
-    nodes: NODES
-}, server);
-
+if (cluster.isMaster) {
+    for (var i = 0; i < CHILD_PROCS; i++) {
+        cluster.fork();
+    }
+} else {
+    var server = http.createServer(handleRequest);
+    server.listen(PORT, function () {
+        //Callback triggered when server is successfully listening. Hurray!
+        console.log("Server listening on: http://localhost:%s", PORT);
+    });
+}
 
 
 // Handle requests
@@ -119,7 +118,7 @@ function buildGif(hours, minutes, seconds) {
                     x = (IMG_WIDTH - tWidth) / 2;
 
                 ctx.fillStyle = FGCOLOR;
-                ctx.fillText(textToDraw, x, IMG_HEIGHT/2);
+                ctx.fillText(textToDraw, x, IMG_HEIGHT / 2);
                 encoder.addFrame(ctx);
 
                 seconds--;
@@ -146,12 +145,12 @@ function buildGif(hours, minutes, seconds) {
                 ctx.fillRect(0, 0, IMG_WIDTH, IMG_HEIGHT);
                 encoder.addFrame(ctx);
 
-                if (i==0) {
+                if (i == 0) {
                     encoder.setDelay(60000); // Skype is stoopid
                 }
 
                 ctx.fillStyle = FGCOLOR;
-                ctx.fillText(textToDraw, x, IMG_HEIGHT/2);
+                ctx.fillText(textToDraw, x, IMG_HEIGHT / 2);
                 encoder.addFrame(ctx);
             }
 
