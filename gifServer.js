@@ -4,6 +4,7 @@ var Canvas = require('canvas');
 var fs = require('fs');
 
 const PORT = 8080;
+const NODES = 4;
 
 const BGCOLOR = '#373a3c';
 const FGCOLOR = '#ffffff';
@@ -14,10 +15,17 @@ const IMG_HEIGHT = 50;
 var server = http.createServer(handleRequest);
 
 // Start server
-server.listen(PORT, function () {
-    //Callback triggered when server is successfully listening. Hurray!
-    console.log("Server listening on: http://localhost:%s", PORT);
-});
+//server.listen(PORT, function () {
+//    //Callback triggered when server is successfully listening. Hurray!
+//    console.log("Server listening on: http://localhost:%s", PORT);
+//});
+
+// multi nodes
+var nodes = require('multi-node').listen({
+    port: PORT,
+    nodes: NODES
+}, server);
+
 
 
 // Handle requests
