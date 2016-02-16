@@ -46,9 +46,10 @@ $(function () {
     $('form').on('submit', function (e) {
         e.preventDefault();
 
-        var data = {
-            interval: $phInput.val()
-        };
+        var interval = $phInput.val(),
+            data = {
+                'interval': interval
+            };
 
         $.post('generate.php', data, function (result) {
 
@@ -67,7 +68,10 @@ $(function () {
                 }, 1000);
 
                 if (result.success) {
-                    loadImage(result.src)
+                    loadImage(result.src);
+                    ga('send', 'event', 'GIF', 'success', interval);
+                } else {
+                    ga('send', 'event', 'GIF', 'fail', interval);
                 }
             });
 
@@ -85,7 +89,7 @@ $(function () {
         var img = new Image(),
             $info = $('<input class="info" type="text">').val(src);
 
-        $(img).load(function() {
+        $(img).load(function () {
             $img = $(this);
             $response.fadeTo(200, .01, function () {
                 $responseInner.html($img);
@@ -100,16 +104,16 @@ $(function () {
 
             });
         }).attr({
-            'src': src+'?'+(new Date().getTime())
-        }).error(function() {
-           setTimeout(function() {
-               loadImage(src);
-           }, 3000);
+            'src': src + '?' + (new Date().getTime())
+        }).error(function () {
+            setTimeout(function () {
+                loadImage(src);
+            }, 3000);
         });
     }
 
 
-    $response.on('click', 'input.info', function() {
+    $response.on('click', 'input.info', function () {
         $(this).select();
     });
 
