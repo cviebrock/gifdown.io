@@ -42,10 +42,16 @@ function handleRequest(req, res) {
                 res.end('Nope!');
             } else {
 
-                buildGif(matches[1], matches[2], matches[3]);
+                if (matches[1]>1) {
+                    res.writeHead(404, {'Content-Type': 'text/plain'});
+                    res.end('Stop it, Jeff.');
+                } else {
 
-                res.writeHead(503, {'Content-Type': 'text/plain', 'Retry-After': 10});
-                res.end('Generating...');
+                    buildGif(matches[1], matches[2], matches[3]);
+
+                    res.writeHead(503, {'Content-Type': 'text/plain', 'Retry-After': 10});
+                    res.end('Generating...');
+                }
             }
         } else {
             // shouldn't get to here as nginx will catch it
