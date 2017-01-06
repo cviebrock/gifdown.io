@@ -1,4 +1,4 @@
-# gifdown.io
+# gifdown
 
 
 ## Installation
