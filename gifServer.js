@@ -29,14 +29,35 @@ function handleRequest(req, res) {
         matches = fileName.match(pattern);
 
     if (!matches) {
-        res.writeHead(404, {'Content-Type': 'text/plain'});
-        res.end('Nope!');
-    } else {
+        var fileName = req.url.split('?')[0],
+            pattern = /\/t\/(\d{10})\.gif$/,
+            matches = fileName.match(pattern);
+    
+        if (!matches) {
+            res.writeHead(404, {'Content-Type': 'text/plain'});
+            res.end('Nope!');
+        }
+        currentTime = Math.round((new Date()).getTime() / 1000);
+        if(currentTime > matches[1]) {
+            frames = 1
+        }else {
+            frames = matches[1] - currentTime;
+        }
+        
 
-        var filePath = path.join(__dirname, 'resources', 'images', 'hour.gif');
+    } else {
+        
+        frames = (3600 * matches[1]) + (60 * matches[2]) + (1 * matches[3])
+    }
+
+    generateGif(frames, res)
+}
+
+function generateGif(frames, res) {
+
+    var filePath = path.join(__dirname, 'resources', 'images', 'hour.gif');
 
         var readStream = fs.createReadStream(filePath),
-            frames = (3600 * matches[1]) + (60 * matches[2]) + (1 * matches[3]),
             frameOffset = (3600 - frames),
             Gifsicle = require('gifsicle-stream'),
             gifsicleOptions = [
@@ -52,5 +73,5 @@ function handleRequest(req, res) {
 
         res.setHeader('Content-Type', 'image/gif');
         readStream.pipe(gifProcessor).pipe(res);
-    }
+
 }
