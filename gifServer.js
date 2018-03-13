@@ -4,7 +4,7 @@ var http = require('http'),
     path = require('path');
 
 const PORT = 8080;
-const CHILD_PROCS = 4;
+const CHILD_PROCS = 2;
 
 // Create server
 

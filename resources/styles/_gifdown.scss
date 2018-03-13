@@ -5,8 +5,8 @@ $gray-darkest:      #000000;
 
 body {
   min-height: 100vh;
-  background: $gray-dark;
-  color: $gray-lightest;
+  background: $gray-800;
+  color: $gray-200;
   font-family: 'Work Sans', sans-serif;
   font-weight: 200;
 }
@@ -32,8 +32,8 @@ h1, h2, h3 {
 }
 
 header, footer {
-  background: transparentize($gray-darkest, .75);
-  color: $gray-light;
+  background: transparentize($gray-800, .75);
+  color: $gray-400;
   flex-basis: 40px;
   padding: 10px;
 }
@@ -42,7 +42,7 @@ footer {
   font-size: .65em;
   a, a:hover {
     font-weight: 400;
-    color: $gray-lighter;
+    color: $gray-300;
   }
 }
 
@@ -72,23 +72,23 @@ input, button {
 
 input.interval {
   font-family: 'Roboto Mono', monospace;
-  color: $gray-dark;
+  color: $gray-700;
 }
 input.info {
   display: block;
   width: 100%;
-  color: $gray-light;
+  color: $gray-400;
   background: transparent;
   font-size: .75rem;
   text-align: center;
   &::selection {
-    color: $gray-lightest;
+    color: $gray-200;
     background: $gif-green;
   }
 }
 
 button {
-  @include button-variant($gray-lightest, $gif-green, $gif-green);
+  @include button-variant($gray-200, $gif-green, $gif-green);
 }
 
 
@@ -113,7 +113,7 @@ button {
     em {
       display: inline-block;
       padding-left: 1em;
-      color: $gray-light;
+      color: $gray-400;
     }
   }
 }

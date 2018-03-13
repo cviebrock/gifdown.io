@@ -4,8 +4,9 @@
 ## Installation
 
 ```sh
-bower install
 npm install
-gulp build
-node gifServer.js
+# ./node_modules/.bin/gulp build
+npm run build
+# node gifServer.js
+npm run serve
 ```

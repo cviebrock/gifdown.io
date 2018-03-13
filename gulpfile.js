@@ -5,9 +5,8 @@ var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('autoprefixer');
 var cssnano = require('gulp-cssnano');
 
-
 var config = {
-    bootstrapDir: './bower_components/bootstrap',
+    bootstrapDir: './node_modules/bootstrap',
     publicDir: './public',
 };
 
