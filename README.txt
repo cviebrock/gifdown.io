@@ -5,7 +5,7 @@
 
 ```sh
 bower install
-gulp build
 npm install
+gulp build
 node gifServer.js
 ```
