@@ -103,6 +103,10 @@ try {
     $seconds = null;
 }
 
+if ($seconds > 3600) {
+	$seconds = abs(time() - $seconds);
+}
+
 if ($seconds === null || $seconds === false || $seconds < 0 || $seconds > 3600) {
 
     die(json_encode(errorResponse()));
